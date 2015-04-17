@@ -82,19 +82,25 @@ define([
 		var AssignmentForm = React.createClass({
 
 			handleSubmitClick: function(event){
-				event.preventDefault();
-				var name = this.refs.name.getDOMNode();
-				var points = this.refs.points.getDOMNode();
+				// event.preventDefault();
+				// var name = this.refs.name.getDOMNode();
+				// var points = this.refs.points.getDOMNode();
 
-			    // call the "custom event" with `this.props.onCreate()`.
-			    this.props.onCreate({
-			    	id: ++guid,
-			    	name: name.value,
-			    	points: points.value
-			    });
+			 //    // call the "custom event" with `this.props.onCreate()`.
+			 //    this.props.onCreate({
+			 //    	id: ++guid,
+			 //    	name: name.value,
+			 //    	points: points.value
+			 //    });
 
-			    this.getDOMNode().reset();
-			    name.focus();
+			 //    this.getDOMNode().reset();
+			 //    name.focus();
+
+			 	ActionList.addAssignment2({
+			 		id: 1,
+			 		name: "nadeeshaan",
+			 		points: 12
+			 	});
 			},
 
 			render: function(){
@@ -122,6 +128,12 @@ define([
 					);
 			}
 		});
+
+		var ActionList = {
+			addAssignment2: function(assignment){
+				alert(assignment);
+			}
+		};
 
 		return {
 			renderSAMPLE: function (el) {
