@@ -53,6 +53,15 @@ function (app, FauxtonAPI, React, Stores, Actions, Components, Documents) {
         </a>);
     },
 
+    //My Edit
+
+    getRevTreeUrlFragment: function (url) {
+      return (
+        <a href={url}>
+          <i className="fonticon-sitemap"></i>
+        </a>);
+    },
+
     getDocumentList: function () {
       return _.map(this.props.results, function (doc) {
 
@@ -68,6 +77,7 @@ function (app, FauxtonAPI, React, Stores, Actions, Components, Documents) {
            isDeletable={doc.isDeletable}
            docIdentifier={doc.id} >
            {this.getUrlFragment('#' + doc.url)}
+           {this.getRevTreeUrlFragment('#')}
          </Components.Document>
        );
       }, this);
