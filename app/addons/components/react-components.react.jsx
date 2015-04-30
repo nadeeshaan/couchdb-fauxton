@@ -213,6 +213,20 @@ function (app, FauxtonAPI, React, Components, beautifyHelper) {
       );
     },
 
+    // Adding my part of new Icon to visualize revision Tree
+
+    getRevTreeUrlFragment: function () {
+      if (!this.props.children) {
+        return '';
+      }
+
+      return (
+        <div className="rev-tree-symbol pull-right" title="Visualize Revision Tree">
+          {this.props.children}
+        </div>
+      );
+    },
+    
     getExtensionIcons: function () {
       var extensions = FauxtonAPI.getExtensions('DocList:icons');
       return _.map(extensions, function (Extension, i) {
