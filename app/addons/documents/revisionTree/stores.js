@@ -1,9 +1,10 @@
 define([
+  'app',
   'api',
   'addons/documents/revisionTree/actiontypes'
 ],
 
-function (FauxtonAPI, ActionTypes) {
+function (app, FauxtonAPI, ActionTypes) {
 
   var Stores = {};
 
@@ -11,19 +12,63 @@ function (FauxtonAPI, ActionTypes) {
 
     initialize: function () {
       this._treeOptions;
-      this._revDocData;
     },
 
     newRevTree: function (options) {
-      this._treeOptions = options;
-    },
+      console.log("At Stores option data");
+      console.log(options);
+      // var urlV = app.host + '/' + options.db + '/' + options.docID + '?open_revs=all&revs=true';
+      // var RevTreeModel = Backbone.Model.extend({
+      //   initialize: function () {
+      //     console.log("Inside event");
+      //   },
+      //   url: function () {
+      //     return urlV;
+      //   },
 
-    newDocData: function (docData) {
-      this._revDocData = docData;
+      //   sync: function (method, model, options) {
+      //     console.log("inside Sync");
+      //     var params = {
+      //       error: options.error,
+      //       success: options.success,
+      //       url: model.url(),
+      //       type: 'GET',
+      //       dataType: 'text'
+      //     };
+
+      //     return $.ajax(params);
+      //   },
+      //   parse: function (response) {
+
+      //     var parsedResult = [];
+      //     var splitResponse = response.split(/(\n|\r\n|\r)/);
+
+      //     for (var i = 0; i < splitResponse.length; i++) {
+      //       if (String(splitResponse[i]).charAt(0) == "{") {
+      //         parsedResult.push(JSON.parse(splitResponse[i]));
+      //       }
+      //     }
+
+      //     // console.log(response);
+      //     return {content: parsedResult};
+      //   }
+      // });
+
+
+      // var model = new RevTreeModel();
+      // model.toJSON();
+      // model.fetch();
+      // // console.log((model.attributes).content);
+      // this._treeData = model.attributes;
+      this._treeOptions = options;
     },
 
     getTreeOptions: function () {
       return this._treeOptions;
+    },
+
+    getTreeData: function () {
+      return this._treeData;
     },
 
     dispatch: function (action) {
@@ -32,12 +77,6 @@ function (FauxtonAPI, ActionTypes) {
           this.newRevTree(action.options);
           this.triggerChange();
         break;
-
-        case ActionTypes.REV_TREE_DOC_REV_DATA:
-          this.newDocData(action.options);
-          this.triggerChange();
-        break;
-        
         default:
         return;
       }
@@ -50,5 +89,4 @@ function (FauxtonAPI, ActionTypes) {
 
   return Stores;
 
-}
-);
+});
