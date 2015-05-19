@@ -437,14 +437,14 @@ function (app, FauxtonAPI, Documents, PagingCollection) {
   Documents.RevTreeDataModel = Backbone.Model.extend({
     initialize: function (url) {
       this.url = url;
-      console.log("inside initialize");
+      // console.log("inside initialize");
     },
     url: function () {
       return this.url;
     },
 
     sync: function (method, model, options) {
-      console.log("inside Sync-----" + this.url);
+      // console.log("inside Sync-----" + this.url);
       var params = {
         error: options.error,
         success: options.success,
@@ -469,6 +469,34 @@ function (app, FauxtonAPI, Documents, PagingCollection) {
       console.log(parsedResult);
 
       return {content: parsedResult};
+    }
+  });
+
+  Documents.RevDocDataModel = Backbone.Model.extend({
+    initialize: function (url) {
+      this.url = app.host + '/' + 'db1/36b3fc66c37205c5eff683bcf5002310?rev=3-631ac6f36bf13b1b9b405c6c244fc2a1'; 
+      // console.log("inside initialize");
+    },
+    url: function () {
+      return this.url;
+    },
+
+    sync: function (method, model, options) {
+      // console.log("inside Sync-----" + this.url);
+      var params = {
+        error: options.error,
+        success: options.success,
+        url: this.url,
+        type: 'GET',
+        dataType: 'text',
+        async: false
+      };
+
+      return $.ajax(params);
+    },
+    parse: function (response) {
+      // console.log(response);
+      return {content: response};
     }
   });
 

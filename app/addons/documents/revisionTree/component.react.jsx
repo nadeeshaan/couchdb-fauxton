@@ -3,10 +3,10 @@ define([
   "api",
   "react",
   'addons/documents/revisionTree/stores',
-  'addons/documents/revisionTree/actions',
+  'addons/documents/revisionTree/actions'
 ],
 
-function (app, FauxtonAPI, React, Stores) {
+function (app, FauxtonAPI, React, Stores, Actions) {
 
   var store = Stores.revTreeStore;
   var lineObjs = [];
@@ -47,14 +47,28 @@ function (app, FauxtonAPI, React, Stores) {
 
   var Circle = React.createClass({
 
+    getInitialState: function () {
+      return {
+        db: '',
+        revision: '',
+        docId: ''
+      };
+    },
+
+    handleClick: function () {
+      console.log("Clicked");
+      Actions.newRevisionDocData();
+    },
+
     render: function () {
       var cx = this.props.data.x;
       var cy = this.props.data.y;
       var radius = r;
       var classVal = this.props.data.class;
+      // console.log(this.props.data.revision);
 
       return (
-        <circle cx={cx} cy={cy} r={radius} className={classVal}>{this.props.children}</circle>
+        <circle cx={cx} cy={cy} r={radius} className={classVal} onClick={this.handleClick}>{this.props.children}</circle>
       );
     }
   });
@@ -98,6 +112,34 @@ function (app, FauxtonAPI, React, Stores) {
       return (
         <div className = "visualizeRevTree">
           {this.props.children}
+        </div>
+      );
+    }
+  });
+
+  var DocDataField = React.createClass({
+    getInitialState: function () {
+      return {
+        docData: "Initial"
+      };
+    },
+
+    componentDidMount: function() {   
+      store.on('change', this.onChange, this);
+    },
+
+    onChange: function (){
+      // console.log('****************');
+      // console.log(store./getRevDocData());
+      this.setState({
+        docData: store.getRevDocData()
+      });
+    },
+
+    render: function() {
+      return (
+        <div>
+          {this.state.docData}
         </div>
       );
     }
@@ -205,22 +247,24 @@ function (app, FauxtonAPI, React, Stores) {
   };
 
   function node(x, y, rev, isLeaf, isDeleted, isWinner, shortDescLen) {
-    circ(x, y, r, isLeaf, isDeleted, isWinner);
     var pos = rev.split('-')[0];
     var id = rev.split('-')[1];
     var opened = false;
+    var revision = pos + '-' + id;
+
+    circ(x, y, r, isLeaf, isDeleted, isWinner, revision);
 
     var textObj = {
       "stLeft": (x - 40) + "px",
       "stTop": (y - 30) + "px",
       "short": pos + '-' + id.substr(0, shortDescLen),
-      "long": pos + '-' + id
+      "long": revision
     };
 
     textObjs.push(textObj);
   }
 
-  var circ = function (x, y, r, isLeaf, isDeleted, isWinner) {
+  var circ = function (x, y, r, isLeaf, isDeleted, isWinner, revision) {
 
     var leafStat = "";
 
@@ -237,7 +281,8 @@ function (app, FauxtonAPI, React, Stores) {
     var nodeObj = {
       "x" : x,
       "y" : y,
-      "class" : leafStat
+      "class" : leafStat,
+      "revision": revision
     };
 
     nodeObjs.push(nodeObj);
@@ -320,6 +365,7 @@ function (app, FauxtonAPI, React, Stores) {
               })
             }
           </Box>
+          <DocDataField />
         </div>
       );
     }
