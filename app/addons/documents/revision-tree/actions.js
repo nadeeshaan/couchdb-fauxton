@@ -12,14 +12,26 @@ function (app, FauxtonAPI, ActionTypes, Stores) {
   return {
     newRevisionTree: function (revTreeDataModel, winner) {
       FauxtonAPI.when(revTreeDataModel.fetch()).done(function () {
-        FauxtonAPI.dispatch({
-          type: ActionTypes.REV_TREE_NEW_REV_TREE,
-          options: {
-            winner: winner,
-            data:revTreeDataModel.attributes.content
-          }
-        });
+        // FauxtonAPI.dispatch({
+        //   type: ActionTypes.REV_TREE_NEW_REV_TREE,
+        //   options: {
+        //     winner: winner,
+        //     data:revTreeDataModel.attributes.content
+        //   }
+        // });
+        var options = {
+          winner: winner,
+          data:revTreeDataModel.attributes.content
+        };
+        this.init(options);
       }.bind(this));
+    },
+
+    init: function (options) {
+      FauxtonAPI.dispatch({
+        type: ActionTypes.REV_TREE_NEW_REV_TREE,
+        options: options
+      });
     }
   };
 });
