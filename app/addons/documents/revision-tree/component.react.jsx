@@ -271,10 +271,13 @@ function (app, FauxtonAPI, React, Stores) {
       var paths = [];
       var deleted = {};
       var treeDataOptions = this.state.treeDataOptions;
+      // console.log("======================");
+      // console.log(JSON.stringify(treeDataOptions));
+      // console.log("======================");
       var result = treeDataOptions.data;
       var winner = treeDataOptions.winner;
-      console.log(result);
-      console.log(winner);
+      // console.log(result);
+      // console.log(winner);
       var minUniq = 0;
 
       var allRevs = [];
